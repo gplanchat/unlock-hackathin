@@ -15,6 +15,8 @@ satellite:
       - "diglin/sylius-api-php-client"
       - "laminas/laminas-diactoros"
       - "php-http/guzzle7-adapter"
+      - "monolog/monolog"
+      - "elasticsearch/elasticsearch"
   pipeline:
     steps:
     - akeneo:
@@ -35,7 +37,7 @@ satellite:
         channel: pipeline
         destinations:
           - elasticsearch:
-              level: warning
+              level: notice
               hosts:
                 - localhost:9200
     - fastmap:
@@ -57,36 +59,27 @@ satellite:
         channel: pipeline
         destinations:
           - elasticsearch:
-              level: warning
+              level: notice
               hosts:
                 - localhost:9200
-#    - sylius:
-#        loader:
-#          type: products
-#          method: create
-#        client:
-#          api_url: 'http://sylius.example.com'
-#          client_id: '2lgsix9qgvms0gckwss8wsc00g0os4sksw08kcw4gcowckssgk'
-#          secret: '2l4i15fitdyc480owss48sw08ow88s48wgkk4cgcs40400ockc'
-#          username: 'admin'
-#          password: password
-#      logger:
-#        channel: pipeline
-#        destinations:
-#          - elasticsearch:
-#              level: warning
-#              hosts:
-#                - localhost:9200
-#    - custom:
-#        loader:
-#          class: Pipeline\BarLoader
-#      logger:
-#        channel: pipeline
-#        destinations:
-#          - elasticsearch:
-#              level: warning
-#              hosts:
-#                - localhost:9200
+    - sylius:
+        loader:
+          type: products
+          method: create
+        client:
+          api_url: 'http://localhost/admin'
+          client_id: '2rabywjnpx6ocgkgo0skk8w84sk04okscgwo0cgw0kkc48gc48'
+          secret: '4b54c49s33y8ook844sgccos8g08cgsg8ogwww4gsc0ckw8gow'
+          username: 'api'
+          password: 'sylius-api'
+        logger:
+          channel: pipeline
+          destinations:
+            - elasticsearch:
+                level: notice
+                hosts:
+                  - host: localhost
+                    port: 9200
     - stream:
         loader:
           destination: 'stdout'
@@ -94,6 +87,6 @@ satellite:
         channel: pipeline
         destinations:
           - elasticsearch:
-              level: warning
+              level: notice
               hosts:
                 - localhost:9200

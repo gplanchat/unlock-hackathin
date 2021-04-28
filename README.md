@@ -1,6 +1,8 @@
 Akeneo Unlock 2021 Hackathon - Hippopotamus team
 ===
 
+![Akeneo unlock Hackathon](https://images-eur.cvent.com/pr53/165ffc0d284045dab580da063641702b/pix/a60c7c22613f43e38875064f4759b552!_!abb05495467427f405fa9b85e0efd759.png?f=webp)
+
 This project aims at building a connector between Akeneo and Sylius using
 Middleware pipelines micro-services/lambda functions.
 
