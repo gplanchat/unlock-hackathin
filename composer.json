@@ -3,6 +3,7 @@
     "description": "Akeneo Unlock Hackathon 2021 - ETL pipelines",
     "type": "project",
     "require": {
+        "php": ">=8.0",
         "php-etl/satellite": "dev-feature/rejection-and-state"
     },
     "license": "MIT",
