@@ -1,0 +1,99 @@
+satellite:
+#  docker:
+#    from: php:8.0-cli-alpine
+#    workdir: /var/www/html
+#    tags:
+#      - kiboko/satellite:akeneo-to-sylius
+  filesystem:
+    path: build
+  composer:
+    require:
+      - "php-etl/pipeline:^0.2"
+      - "php-etl/fast-map:^0.2"
+      - "php-etl/csv-flow:^0.1"
+      - "akeneo/api-php-client-ee"
+      - "diglin/sylius-api-php-client"
+      - "laminas/laminas-diactoros"
+      - "php-http/guzzle7-adapter"
+  pipeline:
+    steps:
+    - akeneo:
+        enterprise: true
+        extractor:
+          type: product
+          method: all
+          search:
+            - { field: enabled, operator: '=', value: true }
+            - { field: completeness, operator: '=', value: 100, scope: ecommerce }
+        client:
+          api_url: 'https://unlock-hippopotamus.demo.cloud.akeneo.com'
+          client_id: '5_2hogwrsqgj40owc8c8sw0swwwos80ccgkck84kok8kwkwswowk'
+          secret: 2pjdo95m1i0w8sw0wowowgcs4wgk8g0g4co4gw0wc88w8osk8
+          username: 'sylius_3225'
+          password: 89bec0638
+      logger:
+        channel: pipeline
+        destinations:
+          - elasticsearch:
+              level: warning
+              hosts:
+                - localhost:9200
+    - fastmap:
+        expression_language:
+          - 'Kiboko\Component\ExpressionLanguage\Akeneo\AkeneoFilterProvider'
+        map:
+          - field: '[code]'
+            copy: '[identifier]'
+          - field: '[translations][en_US]'
+            expression: 'input'
+            map:
+              - field: '[name]'
+                expression: 'input["identifier"] ~" | "~ attribute(input["values"]["variation_name"], locale("en_US"), scope(null, "ecommerce"))'
+              - field: '[slug]'
+                expression: 'input["identifier"]'
+              - field: '[description]'
+                expression: 'attribute(input["values"]["description"], locale("en_US"), scope("ecommerce"))'
+      logger:
+        channel: pipeline
+        destinations:
+          - elasticsearch:
+              level: warning
+              hosts:
+                - localhost:9200
+#    - sylius:
+#        loader:
+#          type: products
+#          method: create
+#        client:
+#          api_url: 'http://sylius.example.com'
+#          client_id: '2lgsix9qgvms0gckwss8wsc00g0os4sksw08kcw4gcowckssgk'
+#          secret: '2l4i15fitdyc480owss48sw08ow88s48wgkk4cgcs40400ockc'
+#          username: 'admin'
+#          password: password
+#      logger:
+#        channel: pipeline
+#        destinations:
+#          - elasticsearch:
+#              level: warning
+#              hosts:
+#                - localhost:9200
+#    - custom:
+#        loader:
+#          class: Pipeline\BarLoader
+#      logger:
+#        channel: pipeline
+#        destinations:
+#          - elasticsearch:
+#              level: warning
+#              hosts:
+#                - localhost:9200
+    - stream:
+        loader:
+          destination: 'stdout'
+      logger:
+        channel: pipeline
+        destinations:
+          - elasticsearch:
+              level: warning
+              hosts:
+                - localhost:9200
