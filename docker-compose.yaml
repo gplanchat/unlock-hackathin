@@ -1,0 +1,55 @@
+version: '2'
+
+services:
+  amqp:
+    build:
+      context: .docker/rabbitmq/
+    ports:
+      - ${AMQP_PORT:-15672}:15672
+    environment:
+      - RABBITMQ_DEFAULT_USER=${AMQP_USER:-kiboko}
+      - RABBITMQ_DEFAULT_PASS=${AMQP_PASSWORD:-password}
+    restart: on-failure
+
+  redis:
+    build:
+      context: .docker/redis/
+    restart: on-failure
+    ports:
+      - ${REDIS_PORT:-6379}:6379
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.12.1
+    ports:
+      - ${ELASTICSEARCH_PORT:-9200}:9200
+    environment:
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    volumes:
+      - elasticsearch:/usr/share/elasticsearch/data
+      - ./.docker/elasticsearch/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+    restart: on-failure
+
+  logstash:
+    image: docker.elastic.co/logstash/logstash:7.12.1
+    volumes:
+      - ./.docker/logstash/logstash.yml:/usr/share/logstash/config/logstash.yml
+      - ./.docker/logstash/pipeline:/usr/share/logstash/pipeline/
+    restart: on-failure
+    depends_on:
+      - elasticsearch
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:7.12.1
+    ports:
+      - ${KIBANA_PORT:-5601}:5601
+    environment:
+      - monitoring.elasticsearch.hosts=http://elasticsearch:9200
+    volumes:
+      - ./.docker/kibana/kibana.yml:/usr/share/kibana/config/kibana.yml
+    restart: on-failure
+    depends_on:
+      - elasticsearch
+
+volumes:
+  elasticsearch:
+    driver: local
