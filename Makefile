@@ -1,6 +1,6 @@
 DOCKER-COMPOSE=docker-compose -p unlock-hackathon-sylius
-ifndef COMPOSER
-COMPOSER=composer
+ifndef COMPOSER_BIN
+COMPOSER_BIN=composer
 endif
 
 .PHONY: all
@@ -11,13 +11,12 @@ cli-pipeline-akeneo-to-sylius:
 	bin/satellite build src/cli-pipeline-akeneo-to-sylius/satellite.yaml
 
 sylius:
-	$(COMPOSER) create-project sylius/sylius-standard sylius "~1.8.0" --ignore-platform-reqs
+	$(COMPOSER_BIN) create-project sylius/sylius-standard sylius "~1.9.0" --ignore-platform-reqs
 
 .PHONY: sylius-install
 sylius-install: sylius
 	cd sylius \
 		&& $(DOCKER-COMPOSE) up -d mysql nodejs mailhog \
-		&& $(DOCKER-COMPOSE) run --rm php composer update \
 		&& $(DOCKER-COMPOSE) run --rm php bin/console sylius:install \
 		&& $(DOCKER-COMPOSE) up -d
 
@@ -28,3 +27,6 @@ sylius-token: sylius
 			--grant-type="password" \
 			--grant-type="refresh_token" \
 			--grant-type="token"
+
+marello:
+	$(COMPOSER_BIN) create-project marellocommerce/marello-application marello "~3.1.0" --ignore-platform-reqs
