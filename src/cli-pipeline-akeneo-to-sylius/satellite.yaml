@@ -30,16 +30,16 @@ satellite:
         client:
           api_url: 'https://unlock-hippopotamus.demo.cloud.akeneo.com'
           client_id: '5_2hogwrsqgj40owc8c8sw0swwwos80ccgkck84kok8kwkwswowk'
-          secret: 2pjdo95m1i0w8sw0wowowgcs4wgk8g0g4co4gw0wc88w8osk8
+          secret: '2pjdo95m1i0w8sw0wowowgcs4wgk8g0g4co4gw0wc88w8osk8'
           username: 'sylius_3225'
-          password: 89bec0638
+          password: 'ad6893ba0'
       logger:
         channel: pipeline
         destinations:
           - elasticsearch:
               level: notice
               hosts:
-                - localhost:9200
+                - 'http://localhost:9200'
     - fastmap:
         expression_language:
           - 'Kiboko\Component\ExpressionLanguage\Akeneo\AkeneoFilterProvider'
@@ -61,25 +61,24 @@ satellite:
           - elasticsearch:
               level: notice
               hosts:
-                - localhost:9200
+                - 'http://localhost:9200'
     - sylius:
         loader:
           type: products
           method: create
         client:
-          api_url: 'http://localhost/admin'
-          client_id: '2rabywjnpx6ocgkgo0skk8w84sk04okscgwo0cgw0kkc48gc48'
-          secret: '4b54c49s33y8ook844sgccos8g08cgsg8ogwww4gsc0ckw8gow'
+          api_url: 'http://localhost'
+          client_id: '414yc7d9mnk044ko4wswgw80o8ssw80gssos488kk8ogss40ko'
+          secret: '4k8ee6n44m4gkkg0coc8o4w4coscw0w4cg0wg8sc0wsk0sw8gs'
           username: 'api'
           password: 'sylius-api'
-        logger:
-          channel: pipeline
-          destinations:
-            - elasticsearch:
-                level: notice
-                hosts:
-                  - host: localhost
-                    port: 9200
+      logger:
+        channel: pipeline
+        destinations:
+          - elasticsearch:
+              level: notice
+              hosts:
+                - 'http://localhost:9200'
     - stream:
         loader:
           destination: 'stdout'
@@ -89,4 +88,4 @@ satellite:
           - elasticsearch:
               level: notice
               hosts:
-                - localhost:9200
+                - 'http://localhost:9200'

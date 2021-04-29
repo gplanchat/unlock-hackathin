@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c6d7622755bb847b79bcccf28c94cfd2",
+    "content-hash": "5d56493b2d112867f76cc482a23f3596",
     "packages": [
         {
             "name": "adlawson/vfs",
@@ -4104,12 +4104,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/config.git",
-                "reference": "6b4aaeb8018207c9a1bf6f3729ac2c03588d60eb"
+                "reference": "9c9953f87bdb44ba3f2d8a47d69aad97a88525ec"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/config/zipball/6b4aaeb8018207c9a1bf6f3729ac2c03588d60eb",
-                "reference": "6b4aaeb8018207c9a1bf6f3729ac2c03588d60eb",
+                "url": "https://api.github.com/repos/symfony/config/zipball/9c9953f87bdb44ba3f2d8a47d69aad97a88525ec",
+                "reference": "9c9953f87bdb44ba3f2d8a47d69aad97a88525ec",
                 "shasum": ""
             },
             "require": {
@@ -4175,7 +4175,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-04-28T07:41:38+00:00"
+            "time": "2021-04-28T21:13:43+00:00"
         },
         {
             "name": "symfony/console",
@@ -5864,7 +5864,9 @@
     },
     "prefer-stable": false,
     "prefer-lowest": false,
-    "platform": [],
+    "platform": {
+        "php": ">=8.0"
+    },
     "platform-dev": [],
     "plugin-api-version": "2.0.0"
 }

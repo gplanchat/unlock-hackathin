@@ -20,10 +20,10 @@ sylius-install: sylius
 		&& $(DOCKER-COMPOSE) run --rm php bin/console sylius:install \
 		&& $(DOCKER-COMPOSE) up -d
 
-.PHONY: sylius-token
-sylius-token: sylius
+.PHONY: sylius-create-token
+sylius-create-token: sylius
 	cd sylius \
-		&& $(DOCKER-COMPOSE) run --rm php php bin/console sylius:oauth-server:create-client \
+		&& $(DOCKER-COMPOSE) exec php bin/console sylius:oauth-server:create-client \
 			--grant-type="password" \
 			--grant-type="refresh_token" \
 			--grant-type="token"
