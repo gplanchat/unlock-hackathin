@@ -20,6 +20,11 @@ sylius-install: sylius
 		&& $(DOCKER-COMPOSE) run --rm php bin/console sylius:install \
 		&& $(DOCKER-COMPOSE) up -d
 
+.PHONY: sylius-start
+sylius-start: sylius
+	cd sylius \
+		&& $(DOCKER-COMPOSE) up -d
+
 .PHONY: sylius-create-token
 sylius-create-token: sylius
 	cd sylius \
