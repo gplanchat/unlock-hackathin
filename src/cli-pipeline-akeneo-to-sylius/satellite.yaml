@@ -3,7 +3,7 @@ satellite:
 #    from: php:8.0-cli-alpine
 #    workdir: /var/www/html
 #    tags:
-#      - kiboko/satellite:akeneo-to-sylius
+#      - kiboko/satellite:akeneo-to-sylius-products
   filesystem:
     path: build
   composer:
@@ -50,7 +50,7 @@ satellite:
             expression: 'input'
             map:
               - field: '[name]'
-                expression: 'input["identifier"] ~" | "~ attribute(input["values"]["variation_name"], locale("en_US"), scope(null, "ecommerce"))'
+                expression: 'attribute(input["values"]["variation_name"], locale("en_US"), scope(null, "ecommerce"))'
               - field: '[slug]'
                 expression: 'input["identifier"]'
               - field: '[description]'
